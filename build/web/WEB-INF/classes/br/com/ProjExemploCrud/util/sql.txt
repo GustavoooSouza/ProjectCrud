@@ -1,0 +1,46 @@
+create table pessoa (
+ idpessoa serial primary key,
+ nome varchar(100) not null,
+ cpf varchar(14) not null unique,
+ datanascimento date,
+ login varchar(20),
+ senha varchar(20)
+);
+insert into pessoa (nome, cpf, datanascimento, login, senha) values ('adm',
+'42745947001', '01-01-2020', 'adm', '123');
+
+create table administrador (
+ idadministrador serial primary key,
+ idpessoa int unique,
+ situacao varchar(1),
+ permitelogin varchar(1),
+ constraint fk_administrador_pessoa foreign key (idpessoa) references pessoa
+);
+insert into administrador (idpessoa,situacao,permitelogin)
+ values (1,'A','S');
+
+create table cliente (
+ idcliente serial primary key,
+ idpessoa int unique,
+ observacao varchar(100),
+ situacao varchar(1),
+ permitelogin varchar(1),
+ constraint fk_cliente_pessoa foreign key (idpessoa) references pessoa
+);
+
+
+crete table fornecedor(
+ idfornecedor serial primary key,
+ idpessoa int unique,
+ url varchar(100),
+ observacao varchar(100),
+ situacao varchar(1),
+ permitelogin varchar(1),
+ constraint fk_fornecedor_pessoa foreign key (idpessoa) references pessoa
+);
+
+
+SELECT p.*, a.* 
+FROM pessoa p, administrador a
+WHERE p.idpessoa = a.idpessoa
+ORDER BY p.nome;
